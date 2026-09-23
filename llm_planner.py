@@ -6,6 +6,8 @@ from pathlib import Path
 import urllib.request
 import urllib.error
 
+BUNDLED_CACHE_DIR = Path(__file__).parent / "llm_responses"
+
 
 PROMPT = """You plan synthetic telecom marketing experiments. Choose up to five
 pilot candidate IDs from the supplied shortlist, with sample sizes 100..200.
@@ -33,16 +35,6 @@ SCHEMA = {
 
 class LLMPlanner:
     def __init__(self):
-        # Local convenience only; the judge's environment always takes precedence.
-        if "OPENAI_API_KEY" not in os.environ:
-            try:
-                for line in (Path(__file__).parent / ".env").read_text().splitlines():
-                    name, separator, value = line.partition("=")
-                    if separator and name.strip() == "OPENAI_API_KEY":
-                        os.environ.setdefault("OPENAI_API_KEY", value.strip().strip("\"'"))
-                        break
-            except OSError:
-                pass
         self.mode = os.getenv("AGENT_LLM_MODE", "auto")
         self.model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
         self.calls = 0
@@ -60,9 +52,12 @@ class LLMPlanner:
                                        "strict": True, "schema": SCHEMA}}}
         key = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
         cache = Path(os.getenv("AGENT_LLM_CACHE", ".llm_cache")) / (key + ".json")
+        # Public recorded model responses, not effects or seed-specific campaigns.
+        # Exact request matching includes all observed pilots and remaining limits.
+        bundled = BUNDLED_CACHE_DIR / (key + ".json")
         try:
-            if cache.exists():
-                answer = json.loads(cache.read_text())
+            if bundled.exists() or cache.exists():
+                answer = json.loads((bundled if bundled.exists() else cache).read_text())
                 source = "cache"
             elif self.mode == "replay":
                 self.events.append({"source": "fallback", "reason": "cache_miss"})

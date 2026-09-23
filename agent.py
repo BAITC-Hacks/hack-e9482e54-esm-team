@@ -74,6 +74,8 @@ class Agent:
                     if len(choices) == 5:
                         break
             for cid, requested in choices[:5]:
+                if time.monotonic() - started > 240:
+                    break
                 if cid not in candidates or env.pilots_left <= 0:
                     continue
                 c = candidates[cid]

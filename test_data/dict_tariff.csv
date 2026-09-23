@@ -1,5 +1,0 @@
-﻿tariff_plan_code,price_tariff,Data_in_PKG,Min_another_operator_in_PKG,Min_another_operator_and_city_in_PKG
-test_tariff_1,900,1024,50,0
-test_tariff_2,2500,5120,150,0
-test_tariff_3,5500,15360,300,0
-test_tariff_4,8500,30720,600,0

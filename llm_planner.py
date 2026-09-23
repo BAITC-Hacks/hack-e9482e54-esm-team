@@ -34,9 +34,12 @@ SCHEMA = {
 
 
 class LLMPlanner:
-    def __init__(self):
-        self.mode = os.getenv("AGENT_LLM_MODE", "auto")
+    def __init__(self, mode=None, cache_dir=None, api_key=None):
+        self.mode = mode if mode is not None else os.getenv("AGENT_LLM_MODE", "auto")
+        self.cache_dir = Path(cache_dir) if cache_dir is not None else Path(os.getenv("AGENT_LLM_CACHE", ".llm_cache"))
         self.model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+        # Optional session credential for the UI; the submitted agent uses env.
+        self._api_key = api_key
         self.calls = 0
         self.events = []
         self.disabled = False
@@ -51,25 +54,26 @@ class LLMPlanner:
                    "text": {"format": {"type": "json_schema", "name": "pilot_plan",
                                        "strict": True, "schema": SCHEMA}}}
         key = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
-        cache = Path(os.getenv("AGENT_LLM_CACHE", ".llm_cache")) / (key + ".json")
+        cache = self.cache_dir / (key + ".json")
         # Public recorded model responses, not effects or seed-specific campaigns.
         # Exact request matching includes all observed pilots and remaining limits.
         bundled = BUNDLED_CACHE_DIR / (key + ".json")
         try:
-            if bundled.exists() or cache.exists():
+            api_key = self._api_key if self._api_key is not None else os.getenv("OPENAI_API_KEY", "")
+            if self.mode != "api" and (bundled.exists() or cache.exists()):
                 answer = json.loads((bundled if bundled.exists() else cache).read_text())
                 source = "cache"
             elif self.mode == "replay":
                 self.events.append({"source": "fallback", "reason": "cache_miss"})
                 return []
-            elif not os.getenv("OPENAI_API_KEY"):
+            elif not api_key:
                 self.disabled = True
                 self.events.append({"source": "fallback", "reason": "missing_api_key"})
                 return []
             else:
                 request = urllib.request.Request(
                     "https://api.openai.com/v1/responses", data=json.dumps(payload).encode(),
-                    headers={"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"],
+                    headers={"Authorization": "Bearer " + api_key,
                              "Content-Type": "application/json"})
                 with urllib.request.urlopen(request, timeout=25) as response:
                     body = json.load(response)

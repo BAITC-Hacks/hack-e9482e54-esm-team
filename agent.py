@@ -10,8 +10,10 @@ from llm_planner import LLMPlanner
 
 
 class Agent:
-    def __init__(self, planner=None):
+    def __init__(self, planner=None, history=None, on_pilot=None):
         self.planner = planner
+        self.history = history
+        self.on_pilot = on_pilot
         self.report = {}
 
     def act(self, env):
@@ -19,7 +21,7 @@ class Agent:
         planner = self.planner or LLMPlanner()
         profile = env.customer_profile
         tariffs = sorted(env.tariffs["tariff_plan_code"].astype(str))
-        history = self._history()
+        history = self._history(self.history)
         cells, candidates = {}, {}
         for (current, segment), group in profile.groupby(
                 ["current_tariff", "arpu_segment"], observed=True, sort=True):
@@ -102,18 +104,25 @@ class Agent:
                 c["mean"] = (c["prior"] / 0.15**2 + c["weighted_sum"] / 0.804**2) / precision
                 c["se"] = math.sqrt(1 / precision)
                 observations.append(dict(candidate_id=cid, n=actual, observed=observed, phase=phase))
+                if self.on_pilot is not None:
+                    self.on_pilot(dict(observations[-1]))
 
         campaigns = self._allocate(env, cells, candidates)
         self.report = {"llm": planner.events, "pilots": observations, "campaigns": campaigns,
+                       "estimates": [{k: c[k] for k in ("candidate_id", "mean", "se", "n")}
+                                     for c in candidates.values() if c["n"]],
                        "elapsed_seconds": round(time.monotonic() - started, 3)}
         return campaigns
 
     @staticmethod
-    def _history():
-        path = Path(__file__).parent / "data" / "change_tariff.csv"
-        if not path.exists():
-            return {}
-        df = pd.read_csv(path)
+    def _history(frame=None):
+        if frame is None:
+            path = Path(__file__).parent / "data" / "change_tariff.csv"
+            if not path.exists():
+                return {}
+            df = pd.read_csv(path)
+        else:
+            df = frame.copy()
         before = pd.to_numeric(df.AVG_ARPU_PREV_3M, errors="coerce")
         after = pd.to_numeric(df.AVG_ARPU_NEXT_3M, errors="coerce")
         df["segment"] = np.where(before < 1000, "LOW", np.where(before <= 5000, "MID", "HIGH"))

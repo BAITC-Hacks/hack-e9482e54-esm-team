@@ -1,0 +1,389 @@
+{
+  "mode": "off",
+  "seed_start": 10,
+  "runs": 20,
+  "agents": {
+    "agent": {
+      "summary": {
+        "median_net": 426486.71752426884,
+        "min_net": 126406.82355725215,
+        "max_net": 810945.5514222868,
+        "positive_runs": 20,
+        "max_seconds": 1.1540482939999492
+      },
+      "runs": [
+        {
+          "seed": 10,
+          "net": 507061.68244125845,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4753,
+          "pilots": 20,
+          "seconds": 0.8154052639984002
+        },
+        {
+          "seed": 11,
+          "net": 462120.0368342898,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4760,
+          "pilots": 20,
+          "seconds": 1.076698277000105
+        },
+        {
+          "seed": 12,
+          "net": 174607.34331666757,
+          "cost": 16000.0,
+          "contacts": 6108,
+          "unique_customers": 4977,
+          "pilots": 20,
+          "seconds": 0.9561632589975488
+        },
+        {
+          "seed": 13,
+          "net": 649851.7836861818,
+          "cost": 53840.0,
+          "contacts": 5720,
+          "unique_customers": 4756,
+          "pilots": 20,
+          "seconds": 1.0722924679976131
+        },
+        {
+          "seed": 14,
+          "net": 617689.4962289091,
+          "cost": 53840.0,
+          "contacts": 5720,
+          "unique_customers": 4776,
+          "pilots": 20,
+          "seconds": 0.9801452759966196
+        },
+        {
+          "seed": 15,
+          "net": 810945.5514222868,
+          "cost": 62272.0,
+          "contacts": 7828,
+          "unique_customers": 6175,
+          "pilots": 20,
+          "seconds": 0.9481731759988179
+        },
+        {
+          "seed": 16,
+          "net": 550772.2989319278,
+          "cost": 22880.0,
+          "contacts": 5720,
+          "unique_customers": 4788,
+          "pilots": 20,
+          "seconds": 0.8133200900010706
+        },
+        {
+          "seed": 17,
+          "net": 126406.82355725215,
+          "cost": 16000.0,
+          "contacts": 5633,
+          "unique_customers": 4544,
+          "pilots": 20,
+          "seconds": 1.1540482939999492
+        },
+        {
+          "seed": 18,
+          "net": 401006.50553607394,
+          "cost": 34904.0,
+          "contacts": 9953,
+          "unique_customers": 8418,
+          "pilots": 20,
+          "seconds": 0.9948987010029668
+        },
+        {
+          "seed": 19,
+          "net": 238958.52052073798,
+          "cost": 16000.0,
+          "contacts": 5227,
+          "unique_customers": 4281,
+          "pilots": 20,
+          "seconds": 0.8921640730004583
+        },
+        {
+          "seed": 20,
+          "net": 485691.7187737131,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4777,
+          "pilots": 20,
+          "seconds": 0.8114437379990704
+        },
+        {
+          "seed": 21,
+          "net": 259366.91671064252,
+          "cost": 34904.0,
+          "contacts": 8726,
+          "unique_customers": 7545,
+          "pilots": 20,
+          "seconds": 0.7718110390014772
+        },
+        {
+          "seed": 22,
+          "net": 597275.7773003017,
+          "cost": 53840.0,
+          "contacts": 5720,
+          "unique_customers": 4754,
+          "pilots": 20,
+          "seconds": 0.8376661949987465
+        },
+        {
+          "seed": 23,
+          "net": 399225.12436233216,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4745,
+          "pilots": 20,
+          "seconds": 0.9033608499994443
+        },
+        {
+          "seed": 24,
+          "net": 325576.1216720059,
+          "cost": 16000.0,
+          "contacts": 6108,
+          "unique_customers": 4940,
+          "pilots": 20,
+          "seconds": 0.9078102179992129
+        },
+        {
+          "seed": 25,
+          "net": 342264.3037121672,
+          "cost": 34904.0,
+          "contacts": 8726,
+          "unique_customers": 7546,
+          "pilots": 20,
+          "seconds": 1.0648194819987111
+        },
+        {
+          "seed": 26,
+          "net": 451966.92951246374,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4760,
+          "pilots": 20,
+          "seconds": 0.942595867003547
+        },
+        {
+          "seed": 27,
+          "net": 489566.0667283903,
+          "cost": 16000.0,
+          "contacts": 5720,
+          "unique_customers": 4800,
+          "pilots": 20,
+          "seconds": 0.8351783139987674
+        },
+        {
+          "seed": 28,
+          "net": 127215.6559132312,
+          "cost": 42994.0,
+          "contacts": 5227,
+          "unique_customers": 4270,
+          "pilots": 20,
+          "seconds": 1.117240765997849
+        },
+        {
+          "seed": 29,
+          "net": 139143.30849744714,
+          "cost": 62376.0,
+          "contacts": 6108,
+          "unique_customers": 4979,
+          "pilots": 20,
+          "seconds": 0.8070053470000857
+        }
+      ]
+    },
+    "template": {
+      "summary": {
+        "median_net": -387245.3308848433,
+        "min_net": -1280177.3547884012,
+        "max_net": -72155.56860022734,
+        "positive_runs": 0,
+        "max_seconds": 0.42279509999934817
+      },
+      "runs": [
+        {
+          "seed": 10,
+          "net": -72155.56860022734,
+          "cost": 18912.0,
+          "contacts": 4728,
+          "unique_customers": 4263,
+          "pilots": 6,
+          "seconds": 0.33542107099856366
+        },
+        {
+          "seed": 11,
+          "net": -1280177.3547884012,
+          "cost": 41184.0,
+          "contacts": 10296,
+          "unique_customers": 9687,
+          "pilots": 6,
+          "seconds": 0.36988718600332504
+        },
+        {
+          "seed": 12,
+          "net": -650117.7481908781,
+          "cost": 46104.0,
+          "contacts": 11526,
+          "unique_customers": 8118,
+          "pilots": 6,
+          "seconds": 0.3667444400016393
+        },
+        {
+          "seed": 13,
+          "net": -367291.5354722821,
+          "cost": 35632.0,
+          "contacts": 8908,
+          "unique_customers": 5358,
+          "pilots": 6,
+          "seconds": 0.36115428199991584
+        },
+        {
+          "seed": 14,
+          "net": -84875.94478884402,
+          "cost": 27344.0,
+          "contacts": 6836,
+          "unique_customers": 4266,
+          "pilots": 6,
+          "seconds": 0.3478101569999126
+        },
+        {
+          "seed": 15,
+          "net": -601169.3982295828,
+          "cost": 42736.0,
+          "contacts": 10684,
+          "unique_customers": 9934,
+          "pilots": 6,
+          "seconds": 0.38102985600198735
+        },
+        {
+          "seed": 16,
+          "net": -586587.7790105487,
+          "cost": 60000.0,
+          "contacts": 15000,
+          "unique_customers": 11504,
+          "pilots": 6,
+          "seconds": 0.39338207300170325
+        },
+        {
+          "seed": 17,
+          "net": -387492.0234534822,
+          "cost": 22504.0,
+          "contacts": 5626,
+          "unique_customers": 5459,
+          "pilots": 6,
+          "seconds": 0.3116351470016525
+        },
+        {
+          "seed": 18,
+          "net": -341989.6800631414,
+          "cost": 42512.0,
+          "contacts": 10628,
+          "unique_customers": 6928,
+          "pilots": 6,
+          "seconds": 0.38957204100006493
+        },
+        {
+          "seed": 19,
+          "net": -613843.345124204,
+          "cost": 41184.0,
+          "contacts": 10296,
+          "unique_customers": 9685,
+          "pilots": 6,
+          "seconds": 0.36083569699985674
+        },
+        {
+          "seed": 20,
+          "net": -653412.9481201846,
+          "cost": 46104.0,
+          "contacts": 11526,
+          "unique_customers": 8115,
+          "pilots": 6,
+          "seconds": 0.3550281179996091
+        },
+        {
+          "seed": 21,
+          "net": -386998.6383162044,
+          "cost": 22504.0,
+          "contacts": 5626,
+          "unique_customers": 5459,
+          "pilots": 6,
+          "seconds": 0.3100532389980799
+        },
+        {
+          "seed": 22,
+          "net": -354915.1090188759,
+          "cost": 23832.0,
+          "contacts": 5958,
+          "unique_customers": 5358,
+          "pilots": 6,
+          "seconds": 0.32838796400028514
+        },
+        {
+          "seed": 23,
+          "net": -576203.7790105487,
+          "cost": 49616.0,
+          "contacts": 12404,
+          "unique_customers": 11504,
+          "pilots": 6,
+          "seconds": 0.36334947100112913
+        },
+        {
+          "seed": 24,
+          "net": -343632.2307397105,
+          "cost": 30936.0,
+          "contacts": 7734,
+          "unique_customers": 7275,
+          "pilots": 6,
+          "seconds": 0.3519699140015291
+        },
+        {
+          "seed": 25,
+          "net": -112060.22252688454,
+          "cost": 10480.0,
+          "contacts": 2620,
+          "unique_customers": 2454,
+          "pilots": 6,
+          "seconds": 0.34395405200120877
+        },
+        {
+          "seed": 26,
+          "net": -382823.950946516,
+          "cost": 34080.0,
+          "contacts": 8520,
+          "unique_customers": 5110,
+          "pilots": 6,
+          "seconds": 0.3575185910012806
+        },
+        {
+          "seed": 27,
+          "net": -612947.6377175536,
+          "cost": 54536.0,
+          "contacts": 13634,
+          "unique_customers": 9934,
+          "pilots": 6,
+          "seconds": 0.42279509999934817
+        },
+        {
+          "seed": 28,
+          "net": -612539.9042148951,
+          "cost": 41184.0,
+          "contacts": 10296,
+          "unique_customers": 9681,
+          "pilots": 6,
+          "seconds": 0.4074372690010932
+        },
+        {
+          "seed": 29,
+          "net": -113007.31551973012,
+          "cost": 10480.0,
+          "contacts": 2620,
+          "unique_customers": 2453,
+          "pilots": 6,
+          "seconds": 0.36541478800063487
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+﻿tariff_plan_code,price_tariff,Data_in_PKG,Min_another_operator_in_PKG,Min_another_operator_and_city_in_PKG
+demo_start,700,2048,50,0
+demo_everyday,1600,10240,150,30
+demo_online,3200,30720,250,60
+demo_max,5900,61440,700,150

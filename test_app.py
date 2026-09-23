@@ -51,6 +51,40 @@ class ServiceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "неизвестный"):
             validate_data(profile, self.history, self.tariffs)
 
+    def test_csv_normalizes_headers_and_excel_formats(self):
+        headers = "    id number ; tariff plan code from ; TARIFF_PLAN_CODE_TO ; avg_arpu_prev_3m ;AVG_ARPU_NEXT_3M"
+        text = headers + "\n1;tariff_1;tariff_2;1200;1500\n"
+        for encoding, prefix in (("utf-8-sig", ""), ("utf-16", "sep=;\n"), ("cp1251", "")):
+            with self.subTest(encoding=encoding):
+                found, _ = identify_uploads([("moves.csv", (prefix + text).encode(encoding))])
+                self.assertIn("history", found)
+                self.assertEqual(found["history"].iloc[0].ID_NUMBER, 1)
+        with self.assertRaisesRegex(ValueError, "дублируются"):
+            read_csv(b"ID_NUMBER, id_number \n1,2\n")
+        russian = "Код;Цена\nтест;1500\n".encode("cp1251")
+        self.assertEqual(list(read_csv(russian).columns), ["Код", "Цена"])
+
+    def test_manual_mapping_and_numeric_cleanup(self):
+        frame = self.tariffs.rename(columns={"tariff_plan_code": "Код", "price_tariff": "Стоимость"})
+        found, _ = identify_uploads([("custom.csv", frame.to_csv(index=False).encode())],
+            {0: "tariffs"}, {0: {"tariff_plan_code": "Код", "price_tariff": "Стоимость"}})
+        self.assertEqual(list(found["tariffs"].tariff_plan_code), list(self.tariffs.tariff_plan_code))
+        profile = self.profile.copy()
+        profile["predicted_arpu"] = profile.predicted_arpu.astype(str)
+        profile.loc[0, "predicted_arpu"] = "1\u00a0200,50"
+        profile.loc[0, "arpu_segment"] = " mid "
+        result, _, _, _ = validate_data(profile, self.history, self.tariffs)
+        self.assertEqual(result.loc[0, "predicted_arpu"], 1200.5)
+        self.assertEqual(result.loc[0, "arpu_segment"], "MID")
+        profile.loc[0, "predicted_arpu"] = "not-a-number"
+        with self.assertRaisesRegex(ValueError, "конечные"):
+            validate_data(profile, self.history, self.tariffs)
+        with self.assertRaisesRegex(ValueError, "нескольких полей"):
+            identify_uploads([("custom.csv", frame.to_csv(index=False).encode())],
+                {0: "tariffs"}, {0: {"tariff_plan_code": "Код", "price_tariff": "Код"}})
+        found, _ = identify_uploads([("extra.csv", b"broken")], {0: "ignore"})
+        self.assertFalse(found)
+
     def test_uploaded_csv_and_history_are_used_without_file_reads(self):
         uploaded = read_csv(self.profile.to_csv(index=False, sep=";").encode())
         self.assertEqual(len(uploaded), len(self.profile))
@@ -119,6 +153,29 @@ class InterfaceTests(unittest.TestCase):
             self.assertEqual(app.text_input(key="session_api_key").value, "")
             self.assertTrue(app.button(key="run_campaigns").disabled)
             self.assertFalse(app.exception)
+            network.assert_not_called()
+
+    def test_manual_mapping_enables_upload_without_editing_csv(self):
+        profile, history, tariffs = demo_data()
+        history = history.rename(columns={"AVG_ARPU_PREV_3M": "Выручка до"})
+        files = [("people.csv", profile.head(300).to_csv(index=False).encode(), "text/csv"),
+                 ("moves.csv", history.head(50).to_csv(index=False).encode(), "text/csv"),
+                 ("tariffs.csv", tariffs.to_csv(index=False).encode(), "text/csv")]
+        with patch("urllib.request.urlopen") as network:
+            app = AppTest.from_file("app.py", default_timeout=30).run()
+            app.text_input(key="session_api_key").set_value("test-key").run()
+            app.checkbox(key="api_consent").check().run()
+            app.radio[0].set_value("Загрузить CSV").run()
+            app.file_uploader[0].set_value(files).run()
+            self.assertTrue(app.button(key="run_campaigns").disabled)
+            role = next(item for item in app.selectbox if item.label == "Назначение файла «moves.csv»")
+            role.set_value("history").run()
+            field = next(item for item in app.selectbox if item.label == "moves.csv · AVG_ARPU_PREV_3M")
+            field.set_value("Выручка до").run()
+            self.assertFalse(app.exception)
+            self.assertFalse(app.button(key="run_campaigns").disabled)
+            field.set_value(None).run()
+            self.assertTrue(app.button(key="run_campaigns").disabled)
             network.assert_not_called()
 
     def test_planner_uses_session_key_without_persisting_it(self):

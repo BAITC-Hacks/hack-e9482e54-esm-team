@@ -131,7 +131,7 @@ flowchart TD
 | `customer_profile.csv`, `data/` | Основные данные кейса |
 | `llm_responses/` | 10 сохранённых ответов для воспроизводимости командных запусков |
 | `test_app.py` | Проверки сервиса, интерфейса, API-ошибок и объяснений |
-| `requirements.txt`, `requirements-app.txt` | Зависимости агента и приложения |
+| `requirements.txt` | Общие зависимости агента и веб-приложения |
 | `.streamlit/config.toml` | Цветовая тема интерфейса |
 
 ## Установка и запуск
@@ -145,12 +145,11 @@ flowchart TD
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements-app.txt
+python -m pip install -r requirements.txt
 ```
 
 В Windows PowerShell окружение активируется командой `.venv\Scripts\Activate.ps1`.
-Для запуска только агента, без сайта и UI-тестов, достаточно
-`python -m pip install -r requirements.txt`.
+Один файл `requirements.txt` устанавливает зависимости агента, сайта и тестов.
 
 ### 2. Запустить приложение
 
